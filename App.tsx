@@ -61,7 +61,11 @@ function App(): React.JSX.Element {
   const {currentlyRunning} = Updates.useUpdates();
 
   useEffect(() => {
-    console.log(JSON.stringify(currentlyRunning, null, '  '));
+    console.log(
+      'currentlyRunning',
+      JSON.stringify(currentlyRunning, null, '  '),
+    );
+    console.log('Updates', JSON.stringify(Updates, null, '  '));
   }, [currentlyRunning]);
 
   const backgroundStyle = {

@@ -1,79 +1,91 @@
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
+# Repro Repo for Expo Update bug
 
-# Getting Started
+When installing expo into an existing react native project, and adding expo-updates without EAS build, the updates config doesn't get built into the app.
 
->**Note**: Make sure you have completed the [React Native - Environment Setup](https://reactnative.dev/docs/environment-setup) instructions till "Creating a new application" step, before proceeding.
+For example, on ios, with `EXUpdatesEnabled` set to `<true />` in `Expo.plist`, inside the app `Updates.isEnabled` is `false`. Further, the `runtimeVersion` is also any empty string. It appears that all the values are set to default.
 
-## Step 1: Start the Metro Server
+## Installation steps:
 
-First, you will need to start **Metro**, the JavaScript _bundler_ that ships _with_ React Native.
+1. `npx @react-native-community/cli@latest init expoUpdatesBug` ([source](https://reactnative.dev/docs/getting-started-without-a-framework))
+2. `npx install-expo-modules@latest` ([source](https://docs.expo.dev/bare/installing-expo-modules/#automatic-installation))
+3. `npx expo install expo-updates` ([source](https://docs.expo.dev/bare/installing-updates/))
+4. `npx pod-install` ([source](https://docs.expo.dev/bare/installing-updates/))
+5. `npx eas-cli@latest update:configure` ([source](https://docs.expo.dev/bare/installing-updates/#javascript-and-json))
+6. Update `app.json` ([source](https://docs.expo.dev/bare/installing-updates/#javascript-and-json))
+7. Update `build.gradle`, `AndroidManifest.xml`, and `strings.xml` ([source](https://docs.expo.dev/bare/installing-updates/#android))
+8. Update `Podfile.properties.json`, `Podfile`, and `Expo.plist` ([source](https://docs.expo.dev/bare/installing-updates/#ios))
+9. ([source](https://docs.expo.dev/eas-update/standalone-service/#using-eas-update-without-eas-build) [and](https://docs.expo.dev/eas-update/getting-started/#configure-the-update-channel)) -- [this page](https://docs.expo.dev/eas-update/standalone-service/#using-eas-update-without-eas-build) should link directly to [this](https://docs.expo.dev/eas-update/getting-started/#configure-the-update-channel), for clarity.
+10. Edit `App.tsx` to log `Updates` module (see [App.tsx](./App.tsx)).
+11. Run `npx expo run:ios`
+12. View logs
 
-To start Metro, run the following command from the _root_ of your React Native project:
+## Update module output:
 
-```bash
-# using npm
-npm start
-
-# OR using Yarn
-yarn start
+```json
+{
+  "channel": "",
+  "checkAutomatically": "NEVER",
+  "createdAt": null,
+  "isEmbeddedLaunch": false,
+  "isEmergencyLaunch": false,
+  "isEnabled": false,
+  "isUsingEmbeddedAssets": false,
+  "localAssets": {},
+  "manifest": {},
+  "runtimeVersion": "",
+  "updateId": null,
+  "latestContext": {
+    "checkError": null,
+    "rollback": null,
+    "isRestarting": false,
+    "sequenceNumber": 0,
+    "latestManifest": null,
+    "isDownloading": false,
+    "downloadedManifest": null,
+    "isUpdatePending": false,
+    "downloadError": null,
+    "isRollback": false,
+    "isChecking": false,
+    "isUpdateAvailable": false,
+    "lastCheckForUpdateTimeString": null
+  },
+  "UpdateCheckResultNotAvailableReason": {
+    "NO_UPDATE_AVAILABLE_ON_SERVER": "noUpdateAvailableOnServer",
+    "UPDATE_REJECTED_BY_SELECTION_POLICY": "updateRejectedBySelectionPolicy",
+    "UPDATE_PREVIOUSLY_FAILED": "updatePreviouslyFailed",
+    "ROLLBACK_REJECTED_BY_SELECTION_POLICY": "rollbackRejectedBySelectionPolicy",
+    "ROLLBACK_NO_EMBEDDED": "rollbackNoEmbeddedConfiguration"
+  },
+  "UpdatesCheckAutomaticallyValue": {
+    "ON_LOAD": "ON_LOAD",
+    "ON_ERROR_RECOVERY": "ON_ERROR_RECOVERY",
+    "WIFI_ONLY": "WIFI_ONLY",
+    "NEVER": "NEVER"
+  },
+  "UpdatesLogEntryCode": {
+    "NONE": "None",
+    "NO_UPDATES_AVAILABLE": "NoUpdatesAvailable",
+    "UPDATE_ASSETS_NOT_AVAILABLE": "UpdateAssetsNotAvailable",
+    "UPDATE_SERVER_UNREACHABLE": "UpdateServerUnreachable",
+    "UPDATE_HAS_INVALID_SIGNATURE": "UpdateHasInvalidSignature",
+    "UPDATE_CODE_SIGNING_ERROR": "UpdateCodeSigningError",
+    "UPDATE_FAILED_TO_LOAD": "UpdateFailedToLoad",
+    "ASSETS_FAILED_TO_LOAD": "AssetsFailedToLoad",
+    "JS_RUNTIME_ERROR": "JSRuntimeError",
+    "INITIALIZATION_ERROR": "InitializationError",
+    "UNKNOWN": "Unknown"
+  },
+  "UpdatesLogEntryLevel": {
+    "TRACE": "trace",
+    "DEBUG": "debug",
+    "INFO": "info",
+    "WARN": "warn",
+    "ERROR": "error",
+    "FATAL": "fatal"
+  },
+  "UpdateInfoType": {
+    "NEW": "new",
+    "ROLLBACK": "rollback"
+  }
+}
 ```
-
-## Step 2: Start your Application
-
-Let Metro Bundler run in its _own_ terminal. Open a _new_ terminal from the _root_ of your React Native project. Run the following command to start your _Android_ or _iOS_ app:
-
-### For Android
-
-```bash
-# using npm
-npm run android
-
-# OR using Yarn
-yarn android
-```
-
-### For iOS
-
-```bash
-# using npm
-npm run ios
-
-# OR using Yarn
-yarn ios
-```
-
-If everything is set up _correctly_, you should see your new app running in your _Android Emulator_ or _iOS Simulator_ shortly provided you have set up your emulator/simulator correctly.
-
-This is one way to run your app — you can also run it directly from within Android Studio and Xcode respectively.
-
-## Step 3: Modifying your App
-
-Now that you have successfully run the app, let's modify it.
-
-1. Open `App.tsx` in your text editor of choice and edit some lines.
-2. For **Android**: Press the <kbd>R</kbd> key twice or select **"Reload"** from the **Developer Menu** (<kbd>Ctrl</kbd> + <kbd>M</kbd> (on Window and Linux) or <kbd>Cmd ⌘</kbd> + <kbd>M</kbd> (on macOS)) to see your changes!
-
-   For **iOS**: Hit <kbd>Cmd ⌘</kbd> + <kbd>R</kbd> in your iOS Simulator to reload the app and see your changes!
-
-## Congratulations! :tada:
-
-You've successfully run and modified your React Native App. :partying_face:
-
-### Now what?
-
-- If you want to add this new React Native code to an existing application, check out the [Integration guide](https://reactnative.dev/docs/integration-with-existing-apps).
-- If you're curious to learn more about React Native, check out the [Introduction to React Native](https://reactnative.dev/docs/getting-started).
-
-# Troubleshooting
-
-If you can't get this to work, see the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
-
-# Learn More
-
-To learn more about React Native, take a look at the following resources:
-
-- [React Native Website](https://reactnative.dev) - learn more about React Native.
-- [Getting Started](https://reactnative.dev/docs/environment-setup) - an **overview** of React Native and how setup your environment.
-- [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
-- [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
-- [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
