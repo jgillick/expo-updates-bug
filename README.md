@@ -4,7 +4,16 @@ When installing expo into an existing react native project, and adding expo-upda
 
 For example, on ios, with `EXUpdatesEnabled` set to `<true />` in `Expo.plist`, inside the app `Updates.isEnabled` is `false`. Further, the `runtimeVersion` is also any empty string. It appears that all the values are set to default.
 
-## Installation steps:
+## Running this example
+
+```
+npm install
+npx expo run:ios
+```
+
+When the app opens, look at the console for the output of the state of expo-update.
+
+## Steps to create this repo
 
 1. `npx @react-native-community/cli@latest init expoUpdatesBug` ([source](https://reactnative.dev/docs/getting-started-without-a-framework))
 2. `npx install-expo-modules@latest` ([source](https://docs.expo.dev/bare/installing-expo-modules/#automatic-installation))
@@ -14,7 +23,7 @@ For example, on ios, with `EXUpdatesEnabled` set to `<true />` in `Expo.plist`, 
 6. Update `app.json` ([source](https://docs.expo.dev/bare/installing-updates/#javascript-and-json))
 7. Update `build.gradle`, `AndroidManifest.xml`, and `strings.xml` ([source](https://docs.expo.dev/bare/installing-updates/#android))
 8. Update `Podfile.properties.json`, `Podfile`, and `Expo.plist` ([source](https://docs.expo.dev/bare/installing-updates/#ios))
-9. ([source](https://docs.expo.dev/eas-update/standalone-service/#using-eas-update-without-eas-build) [and](https://docs.expo.dev/eas-update/getting-started/#configure-the-update-channel)) -- [this page](https://docs.expo.dev/eas-update/standalone-service/#using-eas-update-without-eas-build) should link directly to [this](https://docs.expo.dev/eas-update/getting-started/#configure-the-update-channel), for clarity.
+9. Add the update channel to `Expo.plist` and `AndroidManifest.xml` ([source](https://docs.expo.dev/eas-update/standalone-service/#using-eas-update-without-eas-build) [and](https://docs.expo.dev/eas-update/getting-started/#configure-the-update-channel)), by the way, [this page](https://docs.expo.dev/eas-update/standalone-service/#using-eas-update-without-eas-build) should link directly to [this](https://docs.expo.dev/eas-update/getting-started/#configure-the-update-channel), for clarity.
 10. Edit `App.tsx` to log `Updates` module (see [App.tsx](./App.tsx)).
 11. Run `npx expo run:ios`
 12. View logs
