@@ -1,4 +1,22 @@
 {
-  "name": "expoUpdatesBug",
-  "displayName": "expoUpdatesBug"
+  "displayName": "expoUpdatesBug",
+  "expo": {
+    "name": "expoUpdatesBug",
+    "slug": "expoUpdatesBug",
+    "ios": {
+      "bundleIdentifier": "com.MyApp"
+    },
+    "android": {
+      "package": "com.MyApp"
+    },
+    "runtimeVersion": "1.0.0",
+    "updates": {
+      "url": "https://u.expo.dev/ce02e49c-6bd7-40b6-bda8-5f4a68948048"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "ce02e49c-6bd7-40b6-bda8-5f4a68948048"
+      }
+    }
+  }
 }

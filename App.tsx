@@ -5,7 +5,7 @@
  * @format
  */
 
-import React from 'react';
+import React, {useEffect} from 'react';
 import type {PropsWithChildren} from 'react';
 import {
   SafeAreaView,
@@ -16,6 +16,7 @@ import {
   useColorScheme,
   View,
 } from 'react-native';
+import * as Updates from 'expo-updates';
 
 import {
   Colors,
@@ -57,6 +58,11 @@ function Section({children, title}: SectionProps): React.JSX.Element {
 
 function App(): React.JSX.Element {
   const isDarkMode = useColorScheme() === 'dark';
+  const {currentlyRunning} = Updates.useUpdates();
+
+  useEffect(() => {
+    console.log(JSON.stringify(currentlyRunning, null, '  '));
+  }, [currentlyRunning]);
 
   const backgroundStyle = {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
